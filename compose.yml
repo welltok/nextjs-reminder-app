@@ -1,0 +1,17 @@
+services:
+  app:
+    build: .
+    container_name: reminder_app
+    # The environment section can hold secrets like MONGO_URI, API keys, etc.
+    # If you want to pass them in at runtime, use .env or GitHub Actions secrets.
+    environment:
+      - WEATHER_API_KEY=YOUR_API_KEY_HERE
+    networks:
+      - reminder-net
+    depends_on:
+      - mongo
+    ports:
+      - "3000:3000"  # Next.js typically defaults to port 3000
+
+networks:
+  reminder-net:
