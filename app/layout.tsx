@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./store-provider"
 import Script from 'next/script'
+import 'bootstrap/dist/css/bootstrap.css'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,14 +22,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-          integrity="sha384-9ndCyUa8mIYc2kIDT49y88GCexZvo2w9r+49sCh2Xk4YfRvH+8abtTE1Pi6jizo"
-          crossOrigin="anonymous"
-        />
-      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Providers>{children}</Providers>
       </body>
