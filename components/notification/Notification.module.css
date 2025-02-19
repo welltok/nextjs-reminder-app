@@ -1,0 +1,76 @@
+.notification {
+    display: flex;
+    align-items: stretch;
+    padding: 0;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 300;
+    border: 2px solid;
+    width: 100%;
+    max-width: 400px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+
+.messageSection {
+    flex: 1;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.success .messageSection {
+    color: #0f5132;
+}
+
+.fail .messageSection {
+    color: #842029;
+}
+
+.success {
+    background-color: #d1e7dd;
+    border-color: #0f5132;
+}
+
+.fail {
+    background-color: #f8d7da;
+    border-color: #ce0f2e;
+}
+
+.iconSection {
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 6px;
+    margin-right: 6px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    height: auto;
+    width: auto;
+}
+
+.fail .iconSection {
+    color: #ce0f2e;
+    border-color: #ce0f2e;
+}
+.success .iconSection {
+    color: #0f5132;
+    border-color: #0f5132;
+}
+
+.iconBackground {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    flex-shrink: 0;
+}
+
+.success .iconBackground {
+    background-color: #0f5132;
+}
+
+.fail .iconBackground {
+    background-color: #ce0f2e;
+}
