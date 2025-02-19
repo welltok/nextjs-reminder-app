@@ -31,30 +31,55 @@ Build the application for production:
 npm run build
 ```
 
+# Testing
+
+```bash
+npm run test
+```
+- jest: The test runner.
+- @types/jest: TypeScript definitions for Jest.
+- ts-jest: Transpilation for TS in Jest.
+- @testing-library/react + @testing-library/jest-dom: For testing React components.
+- redux-saga-test-plan (optional but convenient for saga testing).
+
 # Folder structure - Using App Router
 ```
 /nextjs-reminder-app
   ├── /app
   │   ├── /api                   # API endpoints (optional)
   │   │   └── reminders/route.ts # Reminders API logic
-  │   ├── /layout.tsx            # App-level layout (wraps all pages)
+  │   ├── /layout.tsx            # App-level layout (Server Component)
   │   ├── /globals.css           # Global styles (if needed)
   │   ├── /page.tsx              # Home route "/"
+  │   ├── /providers.tsx         # Client component that provides Redux store
   │   └── /reminders
-  │       ├── /page.tsx          # Reminders page "/reminders"
+  │       ├── /page.tsx          # Reminders page "/reminders" (Client or Server)
   │       └── layout.tsx         # Page-specific layout for reminders
-  ├── /components                # Reusable components
-  │   ├── Header.tsx             # Header component
-  │   └── ReminderList.tsx       # Component to display reminders
+  ├── /components                # Reusable React components
+  │   ├── Header.tsx
+  │   └── ReminderList.tsx
+  ├── /features                  # Domain/features-based slices & sagas
+  │   └── reminders
+  │       ├── reminderSlice.ts   # Redux slice for reminders
+  │       ├── reminderSaga.ts    # Saga watchers for reminder side effects
+  │       ├── reminderSlice.test.ts
+  │       ├── reminderSaga.test.ts
+  │       └── index.ts           # (Optional) Re-exports slice & saga
+  ├── /store                     # Central Redux store
+  │   ├── rootReducer.ts         # combineReducers for all slices
+  │   ├── rootSaga.ts            # all/fork watchers from each feature saga
+  │   └── store.ts               # configureStore + sagaMiddleware.run
   ├── /models                    # Mongoose schemas/models
   │   └── Reminder.ts
-  ├── /middleware.ts             # Middleware for authentication
-  ├── /utils                     # Utility functions like DB connectors
+  ├── /middleware.ts             # Next.js middleware for auth, etc.
+  ├── /utils                     # Utility functions (like DB connectors)
   │   └── dbConnect.ts
-  ├── /public                    # Static assets like images
-  ├── tsconfig.json              # TypeScript config
-  ├── package.json               # Project dependencies
+  ├── /public                    # Static assets
+  ├── jest.config.ts             # Jest config (or jest.config.js)
+  ├── jest.setup.ts              # Jest setup (e.g., RTL + jest-dom)
   ├── next.config.js             # Next.js configuration
+  ├── tsconfig.json
+  └── package.json
 ```
 
 # Key File Setip
