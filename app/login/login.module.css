@@ -63,9 +63,19 @@
 }
 
 .loginCardContent {
-    margin: 30px 20px;
+    margin: 20px 30px;
 }
 
 .inputError {
     border: 1px solid #ce0f2e;
+}
+
+.backToLoginButton {
+    /*display: inline-flex;*/
+    /*width: 100%;*/
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
 }
