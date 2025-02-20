@@ -27,35 +27,21 @@ export default function LoginPage(): JSX.Element {
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // For now, just log the values
-    console.log('Email:', email)
-    console.log('Password:', password)
     const loginPayload = {email, password};
 
     dispatch(fetchAuthStart(loginPayload))
-    // Basic validation
-    const emailValid = email === 'admin@gmail.com';
-    const passwordValid = password === 'admin';
-    setAreCredsValid(emailValid && passwordValid);
-
-    if (emailValid && passwordValid) {
-      // Redirect to dashboard on successful login
-      // router.push('/'); // Redirect to dashboard on successful login
-      setAlertMessage(null)
-      console.log('Login successful');
-    } else {
-      setAlertType('fail')
-      setAlertMessage('Invalid username or password')
-      console.log('Invalid username or password');
-    }
-    // In real life, you'd call an API or handle auth here
   }
 
   useEffect(() => {
     if (error) {
+      setEmail('');
+      setPassword('');
       setAlertType('fail');
-      setAlertMessage(error);
+      setAlertMessage('Invalid username or password');
+      console.log('Invalid username or password');
     } else if (token) {
+      setAlertMessage(null)
+      console.log('Login successful');
       router.push('/')
     }
   }, [error, token]);
@@ -74,6 +60,7 @@ export default function LoginPage(): JSX.Element {
       setAlertType('success');
       setAlertMessage('If the email exists in our database, you will receive further instructions.');
       setShowForgotPassword(false);
+      setForgotPasswordEmail("")
     }
   };
 
