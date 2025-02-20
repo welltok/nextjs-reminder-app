@@ -1,8 +1,15 @@
+"use client"; // 1) Enable client-side usage (hooks, etc.)
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Providers from "./store-provider"
-import Script from 'next/script'
-import 'bootstrap/dist/css/bootstrap.css'
+import Providers from "./store-provider";
+import Script from "next/script";
+import "bootstrap/dist/css/bootstrap.css";
+import { useSelector } from "react-redux";
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect } from "react";
+
+import type { RootState } from "@/store/store";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,16 +21,18 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Providers>{children}</Providers>
+        <Providers>
+        <LayoutWithCheck>{children}</LayoutWithCheck>
+        </Providers>
       </body>
       <Script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
@@ -32,4 +41,27 @@ export default function RootLayout({
       />
     </html>
   );
+}
+
+
+function LayoutWithCheck({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const { token } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    // const tokenIsStale = isTokenStale(user);
+
+    if (!token && pathname !== "/login") {
+      router.replace("/login");
+    }
+  }, [token, pathname, router]);
+
+  // const tokenIsStale = isTokenStale(user);
+  if (token && pathname !== "/login") {
+    return null; // or a loading spinner while redirecting
+  }
+
+  return <>{children}</>;
 }
