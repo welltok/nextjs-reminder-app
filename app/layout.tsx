@@ -8,8 +8,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import { useSelector } from "react-redux";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
-
-import type { RootState } from "@/store/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { RootState, persistor } from "@/store/store";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +31,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Providers>
+        <PersistGate loading={null} persistor={persistor}>
         <LayoutWithCheck>{children}</LayoutWithCheck>
+        </PersistGate>
         </Providers>
       </body>
       <Script
@@ -60,7 +62,7 @@ function LayoutWithCheck({ children }: { children: React.ReactNode }) {
 
   // const tokenIsStale = isTokenStale(user);
   if (token && pathname !== "/login") {
-    return null; // or a loading spinner while redirecting
+    return <>{children}</>;
   }
 
   return <>{children}</>;

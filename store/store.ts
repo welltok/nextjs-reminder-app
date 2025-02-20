@@ -1,23 +1,31 @@
 // store.ts
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit'
 import createSagaMiddleware from 'redux-saga'
 import rootReducer from './rootReducer'
 import { rootSaga } from './rootSaga'
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage"
 
-// 1) Create the saga middleware
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["auth"], // persist only the "user" slice (adjust as needed)
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 const sagaMiddleware = createSagaMiddleware();
 
-// 2) Configure the store
 export const store = configureStore({
-  reducer: rootReducer, // or just your single slice if you have only one
+  reducer: persistedReducer, // or just your single slice if you have only one
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),
+    getDefaultMiddleware({ thunk: false, serializableCheck: false  }).concat(sagaMiddleware),
   devTools: process.env.NODE_ENV !== 'production',
 });
 
-// 3) Run the root saga
-sagaMiddleware.run(rootSaga);
 
-// 4) Export types for usage throughout the app
+sagaMiddleware.run(rootSaga);
+export const persistor = persistStore(store);
+
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
