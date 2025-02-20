@@ -90,7 +90,7 @@ export default function LoginPage(): JSX.Element {
 
   return (
       <>
-        <div className="d-flex align-items-center justify-content-center vh-100 bg-light overflow-hidden">
+        <div className={`d-flex align-items-center justify-content-center vh-100 bg-light overflow-hidden ${loginStyles.parentContainer}`}>
           {/* Background */}
           <div className={loginStyles.rotatedDivLeft}/>
           <div className={loginStyles.rotatedDivRight}/>
