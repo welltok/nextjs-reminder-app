@@ -1,13 +1,14 @@
 // pages/login.tsx
 "use client"
-import {useState, FormEvent, useEffect, JSX} from 'react'
-import styles from "*.module.css";
+import { useState, FormEvent, useEffect, JSX } from 'react'
 import loginStyles from './login.module.css';
 import Image from "next/image";
 import Link from "next/link";
-import {useRouter} from "next/router";
 import Notification from "../../components/notification/Notification";
-
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAuthStart } from '@/features/auth/authSlice';
+import { RootState } from '@/store/store';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage(): JSX.Element {
   const [email, setEmail] = useState<string>('')
@@ -20,12 +21,18 @@ export default function LoginPage(): JSX.Element {
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState<string>('');
   const [isForgotPasswordEmailValid, setIsForgotPasswordEmailValid] = useState<boolean>(true);
 
+  const dispatch = useDispatch()
+  const router = useRouter();
+  const { error, token } = useSelector((state: RootState) => state.auth);
 
-  const handleLogin = (e: FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     // For now, just log the values
     console.log('Email:', email)
     console.log('Password:', password)
+    const loginPayload = {email, password};
+
+    dispatch(fetchAuthStart(loginPayload))
     // Basic validation
     const emailValid = email === 'admin@gmail.com';
     const passwordValid = password === 'admin';
@@ -43,6 +50,15 @@ export default function LoginPage(): JSX.Element {
     }
     // In real life, you'd call an API or handle auth here
   }
+
+  useEffect(() => {
+    if (error) {
+      setAlertType('fail');
+      setAlertMessage(error);
+    } else if (token) {
+      router.push('/')
+    }
+  }, [error, token]);
 
   const handleForgotPasswordSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
