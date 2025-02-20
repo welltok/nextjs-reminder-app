@@ -1,5 +1,4 @@
 import { testSaga } from 'redux-saga-test-plan';
-import { call, put } from 'redux-saga/effects';
 import { fetchAuthStart, fetchAuthSuccess, fetchAuthFailure } from './authSlice';
 import { handleLogin } from './authSaga';
 

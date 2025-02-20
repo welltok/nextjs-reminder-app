@@ -1,11 +1,9 @@
 "use client";
 
 import React, {JSX, useEffect, useState} from "react";
-import Image from "next/image";
-import Link from "next/link";
 import InspirationCard from "@/components/InspirationCard"
 import WeatherCard from "@/components/WeatherCard"
-import Navbar from "@/components/NavBar"
+import Navbar from "@/components/Narbar/NavBar"
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/store/store";
 import {fetchInspirationStart} from "@/features/inspiration/inspirationSlice";

@@ -12,7 +12,7 @@ export function* handleLogin(action: ReturnType<typeof fetchAuthStart>) {
         });
 
         if (response.status === 201) {
-            // @ts-ignore
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             const data = yield response.json();
             yield put(fetchAuthSuccess(data.access_token));
             console.log('Login successful');

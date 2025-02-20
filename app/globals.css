@@ -40,3 +40,9 @@ a {
     color-scheme: dark;
   }
 }
+
+.navbar-nav {
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: 0px;
+}

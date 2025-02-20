@@ -1,0 +1,11 @@
+
+.navbarFont {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: 0px;
+}
+
+.activeLink {
+  color:#003C44;
+}

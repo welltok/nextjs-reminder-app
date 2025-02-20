@@ -3,7 +3,7 @@ import { fetchInspirationSuccess, fetchInspirationStart, fetchInspirationFailure
 
 function* getInspiration(action: ReturnType<typeof fetchInspirationStart>) {
     try {
-        // @ts-ignore
+         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         const token = yield select((state: RootState) => state.auth.token);
         const response: Response = yield call(fetch, '/api/inspiration', {
             method: 'POST',
@@ -15,7 +15,7 @@ function* getInspiration(action: ReturnType<typeof fetchInspirationStart>) {
         });
 
         if (response.status === 201) {
-            // @ts-ignore
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             const data = yield response.json();
             yield put(fetchInspirationSuccess(data.inspirationalMessage));
             console.log('Message retrieved');

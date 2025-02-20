@@ -16,6 +16,7 @@ const inspirationSlice = createSlice({
     name: "inspiration",
     initialState,
     reducers: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         fetchInspirationStart(state, action: PayloadAction<{latitude: number; longitude: number}>) {
             state.loading = true;
             state.error = null;

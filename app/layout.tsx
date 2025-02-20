@@ -1,6 +1,6 @@
 "use client"; // 1) Enable client-side usage (hooks, etc.)
 
-import { Geist, Geist_Mono } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from "./store-provider";
 import Script from "next/script";
@@ -11,13 +11,8 @@ import { useEffect } from "react";
 import { PersistGate } from "redux-persist/integration/react";
 import { RootState, persistor } from "@/store/store";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const geistSans = Open_Sans({
+  variable: "--font-open-sans",
   subsets: ["latin"],
 });
 
@@ -29,7 +24,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable}`}>
         <Providers>
         <PersistGate loading={null} persistor={persistor}>
         <LayoutWithCheck>{children}</LayoutWithCheck>
@@ -52,17 +47,10 @@ function LayoutWithCheck({ children }: { children: React.ReactNode }) {
   const { token } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    // const tokenIsStale = isTokenStale(user);
-
     if (!token && pathname !== "/login") {
       router.replace("/login");
     }
   }, [token, pathname, router]);
-
-  // // const tokenIsStale = isTokenStale(user);
-  // if (token && pathname !== "/login") {
-  //   return <>{children}</>;
-  // }
 
   return <>{children}</>;
 }

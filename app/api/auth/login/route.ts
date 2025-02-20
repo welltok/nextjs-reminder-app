@@ -13,6 +13,7 @@ export async function POST(request: Request) {
 
     const externalResponse = await fetch(`${NEXT_SERVICE}/api/v1/auth/login`, {
       method: "POST",
+      credentials: 'include',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
