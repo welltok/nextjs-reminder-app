@@ -12,7 +12,7 @@ export default function Navbar(): JSX.Element {
         {/* Logo + Brand */}
         <Link href="/" className="navbar-brand d-flex align-items-center">
           <Image
-            src="/personify_logo.png"
+            src="/icons/personify_logo_blue.svg"
             alt="Personify Health Logo"
             width={150}
             height={40}

@@ -3,7 +3,7 @@ import { fetchAuthStart, fetchAuthSuccess, fetchAuthFailure } from './authSlice'
 
 function* handleLogin(action: ReturnType<typeof fetchAuthStart>) {
     try {
-        const response: Response = yield call(fetch, 'http://localhost:3080/api/v1/auth/login', {
+        const response: Response = yield call(fetch, '/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
