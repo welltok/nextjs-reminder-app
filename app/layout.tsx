@@ -38,7 +38,6 @@ export default function RootLayout({
       </body>
       <Script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeo6LpIRjcryw5anPN/JB34AW2FNvX23+p0hBT0/9JvM6Q"
         crossOrigin="anonymous"
       />
     </html>
@@ -60,10 +59,10 @@ function LayoutWithCheck({ children }: { children: React.ReactNode }) {
     }
   }, [token, pathname, router]);
 
-  // const tokenIsStale = isTokenStale(user);
-  if (token && pathname !== "/login") {
-    return <>{children}</>;
-  }
+  // // const tokenIsStale = isTokenStale(user);
+  // if (token && pathname !== "/login") {
+  //   return <>{children}</>;
+  // }
 
   return <>{children}</>;
 }

@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { fetchAuthStart, fetchAuthSuccess, fetchAuthFailure } from './authSlice';
 
-function* handleLogin(action: ReturnType<typeof fetchAuthStart>) {
+export function* handleLogin(action: ReturnType<typeof fetchAuthStart>) {
     try {
         const response: Response = yield call(fetch, '/api/auth/login', {
             method: 'POST',

@@ -3,8 +3,16 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useDispatch } from 'react-redux';
+import { authLogOut } from "@/features/auth/authSlice";
 
 export default function Navbar(): JSX.Element {
+  const dispatch = useDispatch()
+
+  const handleLogout = () => {
+    dispatch(authLogOut())
+  }
+  
   return (
     <div className="container-fluid p-0" style={{ backgroundColor: "#f8f9fa" }}>
       {/* Top Navbar */}
@@ -33,9 +41,9 @@ export default function Navbar(): JSX.Element {
               </Link>
             </li>
             <li className="nav-item">
-              <Link href="/logout" className="nav-link">
+              <button onClick={handleLogout} className="nav-link">
                 Log Out
-              </Link>
+              </button>
             </li>
           </ul>
         </div>
