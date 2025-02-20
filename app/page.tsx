@@ -1,28 +1,61 @@
 "use client";
 
-import React from "react";
+import React, {JSX, useEffect, useState} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import InspirationCard from "@/components/InspirationCard"
 import WeatherCard from "@/components/WeatherCard"
 import Navbar from "@/components/NavBar"
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "@/store/store";
+import {fetchInspirationStart} from "@/features/inspiration/inspirationSlice";
+
 
 export default function DashboardLayout(): JSX.Element {
+  const dispatch = useDispatch();
+  const { message: inspMessage, error: inspError } = useSelector((state: RootState)=> state.inspiration);
+  const [inspirationalMessage, setInspirationalMessage] = useState<string>('')
+
+
+  useEffect(() => {
+    const location = {latitude: 37.7749, longitude: 122.419};
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        location.latitude = latitude;
+        location.longitude = longitude
+      }, (error) => {
+        console.log("Error getting location:", error);
+      })
+    } else {
+      console.log("Geolocation is not supported by this browser")
+    }
+    dispatch(fetchInspirationStart(location!))
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (inspError) {
+      setInspirationalMessage('');
+    } else if (inspMessage) {
+      setInspirationalMessage(inspMessage)
+      console.log(inspirationalMessage)
+    }
+  }, [inspError, inspMessage]);
+
   return (
     <div className="container-fluid p-0" style={{ backgroundColor: "#f8f9fa" }}>
       {/* Top Navbar */}
       <Navbar />
-
       {/* Main Content */}
       <div className="row g-0" style={{ minHeight: "100vh" }}>
         {/* Left Column: Weather & Inspiration */}
-        <div className="col-md-4 col-xl-3 border-end p-4">
+        <div className="col-md-4 col-xl-6 border-end p-4">
          <WeatherCard />
-         <InspirationCard />
+         <InspirationCard text={inspirationalMessage} title={"Inspiration of the day!"} generatedAt={new Date()}/>
         </div>
 
         {/* Right Column: Reminders */}
-        <div className="col-md-8 col-xl-9 p-4">
+        <div className="col-md-8 col-xl-6 p-4">
           {/* Reminders Header */}
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h4 className="mb-0">Reminders: 6</h4>
