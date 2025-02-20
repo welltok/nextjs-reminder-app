@@ -39,6 +39,7 @@ export default function LoginPage(): JSX.Element {
       setAlertType('fail');
       setAlertMessage('Invalid username or password');
       console.log('Invalid username or password');
+      setAreCredsValid(false)
     } else if (token) {
       setAlertMessage(null)
       console.log('Login successful');
@@ -61,6 +62,7 @@ export default function LoginPage(): JSX.Element {
       setAlertMessage('If the email exists in our database, you will receive further instructions.');
       setShowForgotPassword(false);
       setForgotPasswordEmail("")
+      setAreCredsValid(true)
     }
   };
 
