@@ -1,0 +1,91 @@
+.container {
+  background-color: #002D330D;
+  color: #4F4F4F;
+  border: 1px solid #D2D2D2 !important;
+  border-radius: 0.75rem;
+}
+
+.temperature {
+  font-size: 60px;
+  font-weight: 700;
+  background: linear-gradient(#292929, #FFFFFF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background: -webkit-linear-gradient(left, #292929, #FFFFFF);
+  background: -o-linear-gradient(right, #292929, #FFFFFF);
+  background: -moz-linear-gradient(right, #292929, #FFFFFF);
+  background: linear-gradient(to right, #292929, #FFFFFF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.feelsLike {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 22.46px;
+}
+
+.feelsLikeValue {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 36px;
+  color: #292929;
+}
+
+.sunRise {
+  color: #292929;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 12.34px;
+}
+
+.sunRiseValue {
+  color: #292929;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 12.34px;
+}
+
+.sunSet {
+  text-align: right;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 12.34px;
+  color: #292929;
+}
+
+.sunSetValue {
+  text-align: right;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 12.34px;
+  color: #292929;
+}
+
+.city {
+  color: #4F4F4F;
+  font-weight: 600;
+  font-size: 22px;
+}
+
+.condition {
+  color: #4F4F4F;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 33px;
+}
+
+.day {
+  color: #292929;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 17px;
+}
+
+.dayTemp {
+  color: #292929;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 17px;
+}

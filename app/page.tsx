@@ -1,17 +1,18 @@
 "use client";
 
-import React, {JSX, useEffect, useRef, useState} from "react";
+import React, { JSX, useEffect, useRef, useState } from "react";
 import InspirationCard from "@/components/InspirationCard"
 import WeatherCard from "@/components/WeatherCard"
 import Navbar from "@/components/Narbar/NavBar"
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "@/store/store";
-import {fetchInspirationStart} from "@/features/inspiration/inspirationSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { fetchInspirationStart } from "@/features/inspiration/inspirationSlice";
+import { fetchWeatherStart } from "@/features/weather/weather";
 
 
 export default function DashboardLayout(): JSX.Element {
   const dispatch = useDispatch();
-  const { message: inspMessage, error: inspError } = useSelector((state: RootState)=> state.inspiration);
+  const { message: inspMessage, error: inspError } = useSelector((state: RootState) => state.inspiration);
   const [inspirationalMessage, setInspirationalMessage] = useState<string>('')
   const hasFetchedInspiration = useRef(false);
 
@@ -20,7 +21,8 @@ export default function DashboardLayout(): JSX.Element {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
           const { latitude, longitude } = position.coords;
-          dispatch(fetchInspirationStart({latitude, longitude}))
+          dispatch(fetchInspirationStart({ latitude, longitude }))
+          dispatch(fetchWeatherStart({ latitude, longitude }))
           console.log("test")
         }, (error) => {
           console.log("Error getting location:", error);
@@ -28,6 +30,7 @@ export default function DashboardLayout(): JSX.Element {
       } else {
         console.log("Geolocation is not supported by this browser")
         dispatch(fetchInspirationStart({ latitude: 37.7749, longitude: 122.419 })) // fetch default location
+        dispatch(fetchWeatherStart({ latitude: 37.7749, longitude: 122.419 })) // fetch default location
       }
     }
 
@@ -50,8 +53,8 @@ export default function DashboardLayout(): JSX.Element {
       <div className="row g-0" style={{ minHeight: "100vh" }}>
         {/* Left Column: Weather & Inspiration */}
         <div className="col-md-4 col-xl-6 border-end p-4">
-         <WeatherCard />
-         <InspirationCard text={inspirationalMessage} title={"Inspiration of the day!"} generatedAt={new Date()}/>
+          <WeatherCard />
+          <InspirationCard text={inspirationalMessage} title={"Inspiration of the day!"} generatedAt={new Date()} />
         </div>
 
         {/* Right Column: Reminders */}
