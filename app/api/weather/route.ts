@@ -5,17 +5,17 @@ import { NEXT_SERVICE } from "@/config";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-
+    const token = request.headers.get("Authorization");
     const externalUrl = NEXT_SERVICE;
     if (!externalUrl) {
       throw new Error("Service URL is not defined in the environment");
     }
 
-    const externalResponse = await fetch(`${NEXT_SERVICE}/api/v1/weather`, {
-      method: "POST",
+    const externalResponse = await fetch(`${NEXT_SERVICE}/api/v1/weather?latitude=${body.latitude}&longitude=${body.longitude}`, {
+      method: "GET",
       credentials: 'include',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
+      headers: { "Content-Type": "application/json",
+        'Authorization': `${token}`,},
     });
 
     const data = await externalResponse.json();
