@@ -24,7 +24,6 @@ const inspirationSlice = createSlice({
         fetchInspirationSuccess(state, action: PayloadAction<string>) {
             state.loading = false;
             state.message = action.payload;
-            console.log(action.payload)
         },
         fetchInspirationFailure(state, action: PayloadAction<string>) {
             state.loading = false;

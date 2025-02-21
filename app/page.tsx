@@ -1,6 +1,6 @@
 "use client";
 
-import React, {JSX, useEffect, useState} from "react";
+import React, {JSX, useEffect, useRef, useState} from "react";
 import InspirationCard from "@/components/InspirationCard"
 import WeatherCard from "@/components/WeatherCard"
 import Navbar from "@/components/Narbar/NavBar"
@@ -13,22 +13,25 @@ export default function DashboardLayout(): JSX.Element {
   const dispatch = useDispatch();
   const { message: inspMessage, error: inspError } = useSelector((state: RootState)=> state.inspiration);
   const [inspirationalMessage, setInspirationalMessage] = useState<string>('')
-
+  const hasFetchedInspiration = useRef(false);
 
   useEffect(() => {
-    const location = {latitude: 37.7749, longitude: 122.419};
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        location.latitude = latitude;
-        location.longitude = longitude
-      }, (error) => {
-        console.log("Error getting location:", error);
-      })
-    } else {
-      console.log("Geolocation is not supported by this browser")
+    if (!hasFetchedInspiration.current) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const { latitude, longitude } = position.coords;
+          dispatch(fetchInspirationStart({latitude, longitude}))
+          console.log("test")
+        }, (error) => {
+          console.log("Error getting location:", error);
+        })
+      } else {
+        console.log("Geolocation is not supported by this browser")
+        dispatch(fetchInspirationStart({ latitude: 37.7749, longitude: 122.419 })) // fetch default location
+      }
     }
-    dispatch(fetchInspirationStart(location!))
+
+    hasFetchedInspiration.current = true;
   }, [dispatch]);
 
   useEffect(() => {
@@ -36,7 +39,6 @@ export default function DashboardLayout(): JSX.Element {
       setInspirationalMessage('');
     } else if (inspMessage) {
       setInspirationalMessage(inspMessage)
-      console.log(inspirationalMessage)
     }
   }, [inspError, inspMessage]);
 
