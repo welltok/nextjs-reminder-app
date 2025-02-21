@@ -1,11 +1,17 @@
 
 .navbarFont {
-  font-weight: 600;
+  font-weight: 300;
   font-size: 16px;
   line-height: 18px;
   letter-spacing: 0px;
 }
 
+.navItemColor {
+  color: #202020;
+}
+
 .activeLink {
   color:#003C44;
+  font-weight: 600;
 }
+

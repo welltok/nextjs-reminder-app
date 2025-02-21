@@ -58,7 +58,7 @@ export default function DashboardLayout(): JSX.Element {
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h4 className="mb-0">Reminders: 6</h4>
             <div>
-              <button className="btn btn-outline-secondary me-2">
+              <button className="btn btn-outline-primary me-2">
                 View Completed
               </button>
               <button className="btn btn-primary">Create New</button>
