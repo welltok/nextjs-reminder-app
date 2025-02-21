@@ -1,0 +1,21 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #D2D2D2;
+    border-radius: 0.75rem 0.75rem 0 0;
+    background-color: #F8F9FA;
+    height: 2.5rem;
+    align-items: center;
+}
+
+.leftHeader {
+    display: flex;
+    align-items: center;
+    width: 50%;
+}
+
+.rightHeader {
+    display: flex;
+    align-items: center;
+    width: 20%;
+}
