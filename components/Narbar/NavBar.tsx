@@ -38,7 +38,7 @@ export default function Navbar(): JSX.Element {
             <li className="nav-item me-3">
               <Link href="/" className={`nav-link  ${navBarStyles.navItemColor} ${pathname === '/' ? navBarStyles.activeLink : ''} d-flex align-items-center`}>
                 <Image
-                    src="/icons/home.svg"
+                    src={pathname==='/' ? "/icons/home-active.svg" : "/icons/home.svg"}
                     alt="Home Icon"
                     width={18}
                     height={18}
@@ -50,7 +50,7 @@ export default function Navbar(): JSX.Element {
             <li className="nav-item me-3">
               <Link href="/users" className={`nav-link ${navBarStyles.navItemColor} ${pathname === '/users' ? navBarStyles.activeLink : ''} d-flex align-items-center `}>
                 <Image
-                    src="/icons/users.svg"
+                    src={pathname==='/users' ? "/icons/users-active.svg" : "/icons/users.svg"}
                     alt="Users Icon"
                     width={18}
                     height={18}

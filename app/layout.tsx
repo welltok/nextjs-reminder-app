@@ -5,6 +5,7 @@ import "./globals.css";
 import Providers from "./store-provider";
 import Script from "next/script";
 import "bootstrap/dist/css/bootstrap.css";
+import "./custom-bootstrap.scss"
 import { useSelector } from "react-redux";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
