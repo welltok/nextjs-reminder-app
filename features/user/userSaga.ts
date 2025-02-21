@@ -37,6 +37,7 @@ function* handleAddUser(action) {
 
     });
     console.log({ response })
+    yield put(fetchUserRequest())
   } catch (error: any) {
     yield put(fetchUserFailure(error.message));
     console.log({ error })

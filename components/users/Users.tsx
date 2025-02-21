@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+
+import React, { JSX, useEffect } from 'react';
 import styles from './Users.module.css'
 import {
     createColumnHelper,

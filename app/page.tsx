@@ -2,17 +2,19 @@
 
 import React, { JSX, useEffect, useRef, useState } from "react";
 import InspirationCard from "@/components/InspirationCard"
-import WeatherCard from "@/components/WeatherCard"
+import WeatherCard from "@/components/weather/WeatherCard"
 import Navbar from "@/components/Narbar/NavBar"
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { fetchInspirationStart } from "@/features/inspiration/inspirationSlice";
-import { fetchWeatherStart } from "@/features/weather/weather";
+import { fetchWeatherStart } from "@/features/weather/weatherSlice";
 
 
 export default function DashboardLayout(): JSX.Element {
   const dispatch = useDispatch();
   const { message: inspMessage, error: inspError } = useSelector((state: RootState) => state.inspiration);
+  const { data: weatherData, error: weatherError } = useSelector((state: RootState) => state.weather);
+
   const [inspirationalMessage, setInspirationalMessage] = useState<string>('')
   const hasFetchedInspiration = useRef(false);
 
@@ -35,7 +37,7 @@ export default function DashboardLayout(): JSX.Element {
     }
 
     hasFetchedInspiration.current = true;
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     if (inspError) {
@@ -53,7 +55,7 @@ export default function DashboardLayout(): JSX.Element {
       <div className="row g-0" style={{ minHeight: "100vh" }}>
         {/* Left Column: Weather & Inspiration */}
         <div className="col-md-4 col-xl-6 border-end p-4">
-          <WeatherCard />
+          <WeatherCard {...weatherData}/>
           <InspirationCard text={inspirationalMessage} title={"Inspiration of the day!"} generatedAt={new Date()} />
         </div>
 
