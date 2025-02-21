@@ -1,6 +1,6 @@
-import React, { JSX } from 'react';
-import styles from './Users.module.css'
 
+import React, { JSX, useEffect } from 'react';
+import styles from './Users.module.css'
 import {
     createColumnHelper,
     flexRender,
@@ -9,80 +9,109 @@ import {
     SortingState,
     useReactTable,
 } from '@tanstack/react-table'
+import CustomModal from '../modal/Modal';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+import Image from 'next/image';
+import { fetchUser } from '@/features/user/userSlice';
 
 type User = {
-    id: number
+    _id: string
     firstName: string
     lastName: string
     email: string
-    role: string
+    roles: string[]
+    phoneNumber: string
 }
-
-const defaultData: User[] = [
-    {
-        id: 0,
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'happy@example.com',
-        role: 'admin'
-    },
-    {
-        id: 1,
-        firstName: 'Michael',
-        lastName: 'Duncan',
-        email: 'michael.duncan@personifyhealth.com',
-        role: 'subscriber'
-    }
-]
 
 const columnHelper = createColumnHelper<User>()
 
 const columns = [
-    columnHelper.accessor(row => row.firstName, {
-        id: 'firstName',
+    columnHelper.accessor('firstName', {
         cell: info => info.getValue(),
         header: () => <span>First Name</span>
     }),
-    columnHelper.accessor(row => row.lastName, {
-        id: 'lastName',
+    columnHelper.accessor('lastName', {
         cell: info => <i>{info.getValue()}</i>,
         header: () => <span>Last Name</span>
     }),
     columnHelper.accessor('email', {
-        cell: info => info.getValue()
+        cell: info => info.getValue(),
+        header: () => <span>Email</span>
     }),
-    columnHelper.accessor('role', {
-        cell: info => info.getValue()
+    columnHelper.accessor(row => row.roles[0], {
+        id: 'role',
+        cell: info => info.getValue(),
+        header: () => <span>Role</span>
+    }),
+    columnHelper.accessor('_id', {
+        id: 'actions',
+        cell: info => (
+            <div>
+                <Image className={styles.iconSection}
+                    src="/icons/delete-icon.svg"
+                    alt="delete-icon"
+                    width={25}
+                    height={20}
+                    // onClick={() => handleDelete(info.getValue())}
+                />
+                <Image className={styles.iconSection}
+                    src="/icons/edit-icon.svg"
+                    alt="edit-icon"
+                    width={25}
+                    height={20}
+                    // onClick={() => handleEdit(info.getValue())}
+                />
+            </div>
+        ),
+        header: () => <span>Actions</span>
     })
 ]
 
 export default function Users(): JSX.Element {
-    const [data, _setData] = React.useState(() => [...defaultData])
+    const [data, setData] = React.useState<User[]>([])
     const [sorting, setSorting] = React.useState<SortingState>([])
 
-    const rerender = React.useReducer(() => ({}), {})[1]
+    const dispatch = useDispatch();
+    const response = useSelector((state: RootState) => state.user);
+
+    useEffect(() => {
+        dispatch(fetchUser())
+    }, [dispatch])
+
+    useEffect(() => {
+        if (response.users) {
+            setData(response.users)
+        }
+    }, [response.users])
 
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
-        getSortedRowModel: getSortedRowModel(), //client-side sorting
-        onSortingChange: setSorting, //optionally control sorting state in your own scope for easy access
+        getSortedRowModel: getSortedRowModel(),
+        onSortingChange: setSorting,
         state: {
             sorting,
         },
     })
 
+    const handleEdit = (id: string) => {
+        console.log(`Edit user with id: ${id}`);
+    }
+
+    const handleDelete = (id: string) => {
+        console.log(`Delete user with id: ${id}`);
+        setData(data.filter(user => user._id !== id));
+    }
+
     return (
         <div className="p-2 block max-w-full overflow-x-scroll overflow-y-hidden">
             <div className={`${styles.header}`}>
                 <div className={`${styles.leftHeader}`}>Users</div>
-                <div className={`${styles.righHeader}`}>
-                    <button type="button" className="btn btn-primary">Create New</button>
-                </div>
+                <CustomModal />
             </div>
-            <div className='h2' />
-            <table className="table table-striped table-hover">
+            <table className="table table-striped table-hover mt-3">
                 <thead>
                     {table.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
@@ -135,10 +164,6 @@ export default function Users(): JSX.Element {
                     ))}
                 </tbody>
             </table>
-            <div className="h-4" />
-            <button onClick={() => rerender()} className="border p-2">
-                Refresh
-            </button>
         </div>
     );
 }
