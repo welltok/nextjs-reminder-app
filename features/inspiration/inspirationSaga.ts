@@ -1,10 +1,11 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { fetchInspirationSuccess, fetchInspirationStart, fetchInspirationFailure } from './inspirationSlice';
+import { RootState } from '@/store/store';
 
-function* getInspiration(action: ReturnType<typeof fetchInspirationStart>) {
+function* getInspiration(action: ReturnType<typeof fetchInspirationStart>): any {
     try {
          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        const token = yield select((state: RootState) => state.auth.token);
+        const token: string = yield select((state: RootState) => state.auth.token);
         const response: Response = yield call(fetch, '/api/inspiration', {
             method: 'POST',
             headers: {

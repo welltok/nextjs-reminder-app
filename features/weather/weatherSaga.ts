@@ -1,12 +1,13 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
-import { fetchWeatherSuccess, fetchWeatherStart, fetchWeatherFailure } from './weather';
+import { fetchWeatherSuccess, fetchWeatherStart, fetchWeatherFailure } from './weatherSlice';
+import { RootState } from '@/store/store';
 
 function* getWeather(action: ReturnType<typeof fetchWeatherStart>) {
     try {
           
         const token = yield select((state: RootState) => state.auth.token);
         const response: Response = yield call(fetch, '/api/weather', {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
@@ -14,9 +15,10 @@ function* getWeather(action: ReturnType<typeof fetchWeatherStart>) {
             body: JSON.stringify(action.payload),
         });
 
-        if (response.status === 201) {
+        if (response.status === 200) {
             const data = yield response.json();
-            yield put(fetchWeatherSuccess(data.weatherMessage));
+            console.log('weather data', data)
+            yield put(fetchWeatherSuccess(data));
             console.log('Message retrieved');
         } else if (response.status === 401) {
             console.log('Retrieval failed: Unauthorized');

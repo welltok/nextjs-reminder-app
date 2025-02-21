@@ -5,8 +5,18 @@ const nextConfig: NextConfig = {
   eslint: {
     dirs: ['login', 'users', 'components', 'features']
   },
-  ignorePatterns: ["api/**/*", "features/**/*Saga.ts"],
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'openweathermap.org',
+        port: '',
+        pathname: '/img/wn/**',
+        search: '',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

@@ -4,7 +4,7 @@ import { fetchAuthStart, fetchAuthSuccess, fetchAuthFailure } from './authSlice'
 export function* handleLogin(action: ReturnType<typeof fetchAuthStart>) {
     try {
         const response: Response = yield call(fetch, '/api/auth/login', {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -13,7 +13,7 @@ export function* handleLogin(action: ReturnType<typeof fetchAuthStart>) {
 
         if (response.status === 201) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            const data = yield response.json();
+            const data: any = yield response.json();
             yield put(fetchAuthSuccess(data.access_token));
             console.log('Login successful');
         } else if (response.status === 401) {
