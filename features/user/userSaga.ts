@@ -1,25 +1,50 @@
-import { call, put, takeLatest } from "redux-saga/effects";
-import { fetchUserStart, fetchUserSuccess, fetchUserFailure } from "./userSlice";
+import { call, put, select, takeLatest } from "redux-saga/effects";
+import { fetchUserStart, fetchUserSuccess, fetchUserFailure, addUserRequest, setUsers, fetchUserRequest } from "./userSlice";
 
 function* handleFetchUser() {
   try {
-    // 1) Indicate loading
-    // (You might already do this in fetchUserStart reducer)
+    const token = yield select((state) => state.auth.token);
+    const response = yield call(fetch, '/api/user', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch user');
+    }
+   
+    const userData: User[] = yield response.json();
+    yield put(setUsers(userData?.users));
 
-    // 2) Call API
-    // const data: { name: string } = yield call(mockFetchUserApi);
-
-    // 3) Dispatch success
-    // yield put(fetchUserSuccess(data));
   } catch (error: any) {
-    // 4) Dispatch failure
     yield put(fetchUserFailure(error.message));
+    console.log({ error });
   }
 }
 
-// fetchUserStart.type === "user/fetchUserStart"
-// fetchUserStart.type === "sliceName/reducerName"
+function* handleAddUser(action) {
+  try {
+    const token = yield select((state) => state.auth.token);
+    const response = yield call(fetch, '/api/user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(action.payload),
+
+    });
+    console.log({ response })
+  } catch (error: any) {
+    yield put(fetchUserFailure(error.message));
+    console.log({ error })
+
+  }
+}
 
 export function* watchUserSaga() {
-  yield takeLatest(fetchUserStart.type, handleFetchUser);
+  yield takeLatest(fetchUserRequest.type, handleFetchUser);
+  yield takeLatest(addUserRequest.type, handleAddUser);
 }
