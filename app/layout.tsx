@@ -4,6 +4,7 @@ import Providers from "@/lib/store/store-provider";
 import Script from "next/script";
 import "bootstrap/dist/css/bootstrap.css";
 import "./custom-bootstrap.scss"
+import { WebVitals } from '@/components/web-vitals'
 
 const geistSans = Open_Sans({
   variable: "--font-open-sans",
@@ -20,6 +21,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable}`}>
         <Providers>
+          <WebVitals />
           {children}
         </Providers>
       </body>

@@ -27,7 +27,7 @@ function* getInspiration(action: ReturnType<typeof fetchInspirationStart>): any 
             console.log('Retrieval failed: Unexpected error');
             yield put(fetchInspirationFailure('Unexpected error occurred'));
         }
-    } catch (error) {
+    } catch (error: any) {
         console.log('Retrieval failed: Network error', error);
         yield put(fetchInspirationFailure('Network error occurred'));
     }

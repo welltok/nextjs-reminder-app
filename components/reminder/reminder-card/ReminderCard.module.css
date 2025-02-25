@@ -5,6 +5,13 @@
     border: 2px solid #CE0E2D
 }
 
+.statusContainerComplete {
+    width: 36.5rem;
+    height: 8.5rem;
+    border-radius: 0.75rem;
+    border: 2px solid #048142;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -33,7 +40,6 @@
 }
 
 .status {
-    width: 4rem;
     background-color: #ffe5e0;
     color: #882620;
     font-size: .8rem;
@@ -41,7 +47,6 @@
     padding: .4rem;
     border-radius: 0.45rem;
     margin: .5rem;
-    border: 1px solid #882620
 }
 
 .iconSection {
@@ -64,4 +69,15 @@
     font-weight: 700;
     font-size: 1rem;
     margin-bottom: .5rem;
+}
+
+
+.statusComplete {
+    background-color: #ffe5e0;
+    color: #048142;
+    font-size: .8rem;
+    text-align: center;
+    padding: .4rem;
+    border-radius: 0.45rem;
+    margin: .5rem;
 }

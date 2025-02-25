@@ -46,7 +46,7 @@ const columns = [
     }),
     columnHelper.accessor('_id', {
         id: 'actions',
-        cell: info => (
+        cell: () => (
             <div>
                 <Image className={styles.iconSection}
                     src="/icons/delete-icon.svg"
@@ -96,14 +96,14 @@ export default function Users(): JSX.Element {
         },
     })
 
-    const handleEdit = (id: string) => {
-        console.log(`Edit user with id: ${id}`);
-    }
+    // const _handleEdit = (id: string) => {
+    //     console.log(`Edit user with id: ${id}`);
+    // }
 
-    const handleDelete = (id: string) => {
-        console.log(`Delete user with id: ${id}`);
-        setData(data.filter(user => user._id !== id));
-    }
+    // const handleDelete = (id: string) => {
+    //     console.log(`Delete user with id: ${id}`);
+    //     setData(data.filter(user => user._id !== id));
+    // }
 
     return (
         <div className="p-2 block max-w-full overflow-x-scroll overflow-y-hidden">

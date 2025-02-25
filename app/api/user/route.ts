@@ -21,7 +21,6 @@ export async function POST(request: Request) {
 
     const data = await externalResponse.json();
 
-    console.log("REACHING HERE")
     if (externalResponse.ok) {
       return NextResponse.json(data, { status: externalResponse.status });
     } else {
@@ -53,7 +52,6 @@ export async function GET(request: Request) {
 
     const data = await externalResponse.json();
 
-    console.log("REACHING HERE")
     if (externalResponse.ok) {
       return NextResponse.json(data, { status: externalResponse.status });
     } else {

@@ -1,51 +1,96 @@
 "use client";
 
 import React, { JSX, useEffect, useRef, useState } from "react";
-import InspirationCard from "@/components/InspirationCard"
-import WeatherCard from "@/components/weather/WeatherCard"
-import Navbar from "@/components/Narbar/NavBar"
+import InspirationCard from "@/components/InspirationCard";
+import WeatherCard from "@/components/weather/WeatherCard";
+import Navbar from "@/components/Narbar/NavBar";
+import Reminders from "@/components/reminder/Reminders";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { fetchInspirationStart } from "@/features/inspiration/inspirationSlice";
 import { fetchWeatherStart } from "@/features/weather/weatherSlice";
+import {
+  fetchRemindersRequest,
+  createReminderRequest,
+  deleteReminderRequest,
+  updateReminderRequest,
+  completeReminderRequest,
+} from "@/features/reminders/reminderSlice";
 
+interface Reminder {
+  _id: string;
+  dueDate: string;
+  title: string;
+  description: string;
+  status: "overdue" | "to-do" | "completed";
+}
 
 export default function DashboardLayout(): JSX.Element {
   const dispatch = useDispatch();
   const { message: inspMessage, error: inspError } = useSelector((state: RootState) => state.inspiration);
   const { data: weatherData, error: weatherError } = useSelector((state: RootState) => state.weather);
+  const { data, loading: remindersLoading } = useSelector((state: RootState) => state.reminders);
 
-  const [inspirationalMessage, setInspirationalMessage] = useState<string>('')
-  const hasFetchedInspiration = useRef(false);
+  const [inspirationalMessage, setInspirationalMessage] = useState<string>("");
+
+  const hasFetchedData = useRef(false);
 
   useEffect(() => {
-    if (!hasFetchedInspiration.current) {
+    if (!hasFetchedData.current) {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          const { latitude, longitude } = position.coords;
-          dispatch(fetchInspirationStart({ latitude, longitude }))
-          dispatch(fetchWeatherStart({ latitude, longitude }))
-          console.log("test")
-        }, (error) => {
-          console.log("Error getting location:", error);
-        })
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            dispatch(fetchInspirationStart({ latitude, longitude }));
+            dispatch(fetchWeatherStart({ latitude, longitude }));
+          },
+          (error) => {
+            console.log("Error getting location:", error);
+            dispatch(fetchInspirationStart({ latitude: 37.7749, longitude: 122.419 })); // Default location
+            dispatch(fetchWeatherStart({ latitude: 37.7749, longitude: 122.419 }));
+          }
+        );
       } else {
-        console.log("Geolocation is not supported by this browser")
-        dispatch(fetchInspirationStart({ latitude: 37.7749, longitude: 122.419 })) // fetch default location
-        dispatch(fetchWeatherStart({ latitude: 37.7749, longitude: 122.419 })) // fetch default location
+        console.log("Geolocation is not supported by this browser");
+        dispatch(fetchInspirationStart({ latitude: 37.7749, longitude: 122.419 }));
+        dispatch(fetchWeatherStart({ latitude: 37.7749, longitude: 122.419 }));
       }
-    }
 
-    hasFetchedInspiration.current = true;
-  }, []);
+      dispatch(fetchRemindersRequest()); // Fetch reminders from API
+      hasFetchedData.current = true;
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     if (inspError) {
-      setInspirationalMessage('');
+      setInspirationalMessage("");
     } else if (inspMessage) {
-      setInspirationalMessage(inspMessage)
+      setInspirationalMessage(inspMessage);
     }
   }, [inspError, inspMessage]);
+
+  const handleCreateNew = (newReminder: Reminder) => {
+    dispatch(createReminderRequest(newReminder));
+  };
+
+  const handleDelete = (id: string) => {
+    console.log('id',id)
+    dispatch(deleteReminderRequest(id));
+  };
+
+  const handleEdit = (id: string, updatedReminder: Reminder) => {
+    console.log('id handleEdit', id)
+    dispatch(updateReminderRequest({ id, updatedReminder }));
+  };
+
+  const handleComplete = (id: string) => {
+    console.log('id', id)
+    dispatch(completeReminderRequest(id));
+  };
+
+  const viewCompleted = () => {
+
+  }
 
   return (
     <div className="container-fluid p-0" style={{ backgroundColor: "#f8f9fa" }}>
@@ -55,82 +100,22 @@ export default function DashboardLayout(): JSX.Element {
       <div className="row g-0" style={{ minHeight: "100vh" }}>
         {/* Left Column: Weather & Inspiration */}
         <div className="col-md-4 col-xl-6 border-end p-4">
-          <WeatherCard {...weatherData}/>
+          {weatherError ? <p className="text-danger">Error loading weather data</p> : <WeatherCard {...weatherData} />}
           <InspirationCard text={inspirationalMessage} title={"Inspiration of the day!"} generatedAt={new Date()} />
         </div>
-
+         
         {/* Right Column: Reminders */}
         <div className="col-md-8 col-xl-6 p-4">
-          {/* Reminders Header */}
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <h4 className="mb-0">Reminders: 6</h4>
-            <div>
-              <button className="btn btn-outline-primary me-2">
-                View Completed
-              </button>
-              <button className="btn btn-primary">Create New</button>
-            </div>
-          </div>
-
-          {/* Example Reminder Item #1 */}
-          <div className="mb-3 p-3 border rounded d-flex justify-content-between align-items-start">
-            <div>
-              <div className="mb-1">
-                <span className="fw-bold me-2">02/20/2025</span>
-                <span className="badge bg-danger">Overdue</span>
-              </div>
-              <h6 className="mb-1">
-                Enim luctus turpis eget ornare placerat condimentum dui volutpat
-              </h6>
-              <p className="mb-1 text-muted">
-                Tellus at sed phasellus euismod habitasse convallis nullam est
-                urna.
-              </p>
-            </div>
-            <div className="ms-3 d-flex flex-column align-items-end">
-              <div className="mb-2">
-                <button className="btn btn-sm btn-outline-secondary me-1" title="Delete">
-                  🗑️
-                </button>
-                <button className="btn btn-sm btn-outline-secondary me-1" title="Edit">
-                  ✏️
-                </button>
-                <button className="btn btn-sm btn-outline-secondary" title="Complete">
-                  ✅
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Example Reminder Item #2 */}
-          <div className="mb-3 p-3 border rounded d-flex justify-content-between align-items-start">
-            <div>
-              <div className="mb-1">
-                <span className="fw-bold me-2">02/26/2025</span>
-                <span className="badge bg-info text-dark">To Do</span>
-              </div>
-              <h6 className="mb-1">
-                Quam risus habitasse imperdiet ipsum quam vestibulum
-              </h6>
-              <p className="mb-1 text-muted">
-                Cursus scelerisque vel quis morbi enim enim. Sed duis luctus
-                lectus.
-              </p>
-            </div>
-            <div className="ms-3 d-flex flex-column align-items-end">
-              <div className="mb-2">
-                <button className="btn btn-sm btn-outline-secondary me-1" title="Delete">
-                  🗑️
-                </button>
-                <button className="btn btn-sm btn-outline-secondary me-1" title="Edit">
-                  ✏️
-                </button>
-                <button className="btn btn-sm btn-outline-secondary" title="Complete">
-                  ✅
-                </button>
-              </div>
-            </div>
-          </div>
+        
+            <Reminders
+              reminders={data}
+              onViewCompleted={() => console.log("Viewing completed reminders...")}
+              onCreateNew={handleCreateNew}
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+              onComplete={handleComplete}
+            />
+          
         </div>
       </div>
     </div>
