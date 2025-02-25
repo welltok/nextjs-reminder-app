@@ -14,7 +14,16 @@ interface WeatherWidgetProps {
   weatherGraph?: string
 }
 
-const convertUnixToDate = (timestamp: number) => {
+export const convertUnixToDate = (timestamp: number | string) => {
+  if ( typeof(timestamp) === "string") {
+    return new Date(timestamp).toLocaleString("en-US", {
+      weekday: "long", // Full day name (e.g., "Monday")
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true, // 12-hour format
+    })
+  }
   return new Date(timestamp * 1000).toLocaleString("en-US", {
     weekday: "long", // Full day name (e.g., "Monday")
     hour: "2-digit",
@@ -72,7 +81,7 @@ export default function WeatherWidget({
               <div className="ms-2 d-flex flex-column align-items-center justify-content-around h-100">
                 <h5 className={styles.city}>{city}</h5>
                 <Image
-                  src={iconSrc}
+                  src={getWeatherIcon(iconSrc)}
                   alt={`temperature icon`}
                   width={100}
                   height={100}
@@ -88,7 +97,6 @@ export default function WeatherWidget({
             {forecast.map(({ day, high, low, iconSrc }, index) => (
               <li key={index}>
                 <div className="d-flex w-100 align-items-center gap-2">
-                  {console.log(getWeatherIcon(iconSrc))}
                  <Image
                     src={getWeatherIcon(iconSrc)}
                     alt={`icon`}

@@ -7,7 +7,7 @@ function* getWeather(action: ReturnType<typeof fetchWeatherStart>) {
           
         const token = yield select((state: RootState) => state.auth.token);
         const response: Response = yield call(fetch, '/api/weather', {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
