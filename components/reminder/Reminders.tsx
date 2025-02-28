@@ -35,7 +35,7 @@ export default function Reminders({
   const handleAddReminder = () => {
     if (!newReminder.date || !newReminder.title) return;
     onCreateNew({
-      _id: String(Date.now()),
+      _id: null,
       dueDate: newReminder.date,
       title: newReminder.title,
       description: newReminder.description,

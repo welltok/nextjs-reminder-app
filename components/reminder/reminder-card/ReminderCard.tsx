@@ -15,7 +15,7 @@ interface ReminderCardProps {
 
 const ReminderCard: React.FC<ReminderCardProps> = ({ date, status, content, contentTitle, onDelete, onEdit, onComplete }) => {
   return (
-    <div className={`${styles.container} ${status.toLowerCase()  === "Overdue" ? styles.overdueBorder : ""} ${status.toLowerCase() === "completed" ? styles.statusContainerComplete : ""}`}>
+    <div className={`${styles.container} ${status.toLowerCase()  === "Overdue" ? styles.overdueBorder : ""} ${status.toLowerCase() === "completed" ? styles.statusContainerComplete : ""} mb-3`}>
       <div className={`${styles.header}`}>
         <div className={`${styles.leftHeader}`}>
           <Image className={styles.iconSection} src="/icons/star.svg" alt="star-icon" width={15} height={15} />
