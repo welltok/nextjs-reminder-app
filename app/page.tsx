@@ -27,7 +27,7 @@ interface Reminder {
 
 export default function DashboardLayout(): JSX.Element {
   const dispatch = useDispatch();
-  const { message: inspMessage, error: inspError } = useSelector((state: RootState) => state.inspiration);
+  const { message: inspMessage, error: inspError, loading } = useSelector((state: RootState) => state.inspiration);
   const { data: weatherData, error: weatherError } = useSelector((state: RootState) => state.weather);
   const { data, loading: remindersLoading } = useSelector((state: RootState) => state.reminders);
 
@@ -101,7 +101,7 @@ export default function DashboardLayout(): JSX.Element {
         {/* Left Column: Weather & Inspiration */}
         <div className="col-md-4 col-xl-6 border-end p-4">
           {weatherError ? <p className="text-danger">Error loading weather data</p> : <WeatherCard {...weatherData} />}
-          <InspirationCard text={inspirationalMessage} title={"Inspiration of the day!"} generatedAt={new Date()} />
+          <InspirationCard text={inspirationalMessage} title={"Inspiration of the day!"} generatedAt={new Date()} loading={loading} />
         </div>
          
         {/* Right Column: Reminders */}

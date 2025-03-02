@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import RemindersList from "./RemindersList";
-import remindersCSS from './reminders.module.css'
+import remindersCSS from './reminders.module.css';
+
 interface Reminder {
   _id: string;
   dueDate: string;
@@ -28,23 +29,19 @@ export default function Reminders({
 }: RemindersProps) {
   const [newReminder, setNewReminder] = useState({
     date: "",
-    title: "",
     description: "",
   });
 
   const handleAddReminder = () => {
-    if (!newReminder.date || !newReminder.title) return;
+    if (!newReminder.date || !newReminder.description) return;
     onCreateNew({
       _id: null,
       dueDate: newReminder.date,
-      title: newReminder.title,
       description: newReminder.description,
       status: "to-do",
     });
-    setNewReminder({ date: "", title: "", description: "" });
+    setNewReminder({ date: "", description: "" });
   };
-
-  console.log('reminders', reminders)
 
   return (
     <div>
@@ -54,7 +51,11 @@ export default function Reminders({
           {/* <button className="btn btn-outline-primary me-2" onClick={onViewCompleted}>
             View Completed
           </button> */}
-          <button className="btn btn-primary" onClick={handleAddReminder}>
+          <button className="btn btn-primary" onClick={handleAddReminder} style={{
+                backgroundColor:' #163B42',
+                borderColor: '#163B42',
+                color: 'white',
+                }}>
             Create New
           </button>
         </div>
@@ -67,13 +68,6 @@ export default function Reminders({
           className="form-control mb-2"
           value={newReminder.date}
           onChange={(e) => setNewReminder({ ...newReminder, date: e.target.value })}
-        />
-        <input
-          type="text"
-          className="form-control mb-2"
-          placeholder="Add Description*"
-          value={newReminder.title}
-          onChange={(e) => setNewReminder({ ...newReminder, title: e.target.value })}
         />
         <input
           type="text"

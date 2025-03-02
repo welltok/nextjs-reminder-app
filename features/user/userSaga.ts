@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest } from "redux-saga/effects";
-import { fetchUserStart, fetchUserSuccess, fetchUserFailure, addUserRequest, setUsers, fetchUserRequest } from "./userSlice";
+import { fetchUserFailure, addUserRequest, setUsers, fetchUserRequest, editUserRequest, deleteUserRequest } from "./userSlice";
 
 function* handleFetchUser() {
   try {
@@ -45,7 +45,52 @@ function* handleAddUser(action) {
   }
 }
 
+function* handleEditUser(action) {
+  try {
+    const token = yield select((state) => state.auth.token);
+    const response = yield call(fetch, '/api/user', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(action.payload),
+
+    });
+    console.log({ response })
+    yield put(fetchUserRequest())
+  } catch (error: any) {
+    yield put(fetchUserFailure(error.message));
+    console.log({ error })
+
+  }
+}
+
+
+function* handleDeleteUser(action) {
+  try {
+    const token = yield select((state) => state.auth.token);
+    const response = yield call(fetch, '/api/user', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(action.payload),
+
+    });
+    console.log({ response })
+    yield put(fetchUserRequest())
+  } catch (error: any) {
+    yield put(fetchUserFailure(error.message));
+    console.log({ error })
+
+  }
+}
+
 export function* watchUserSaga() {
   yield takeLatest(fetchUserRequest.type, handleFetchUser);
   yield takeLatest(addUserRequest.type, handleAddUser);
+  yield takeLatest(editUserRequest.type, handleEditUser);
+  yield takeLatest(deleteUserRequest.type, handleDeleteUser);
 }

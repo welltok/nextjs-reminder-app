@@ -37,6 +37,10 @@ const userSlice = createSlice({
     },
     fetchUserRequest: () => {
     },
+    editUserRequest: () => {
+    },
+    deleteUserRequest: () => {
+    }
   },
 });
 
@@ -44,11 +48,19 @@ export const addUser = (payload) => ({
   type: addUserRequest.type, payload
 })
 
+export const editUser = (payload) => ({
+  type: editUserRequest.type, payload
+})
+
 export const fetchUser = () => ({
   type: fetchUserRequest.type
 })
 
-export const { fetchUserStart, fetchUserSuccess, fetchUserFailure, addUserRequest, fetchUserRequest, setUsers, } =
+export const deleteUser = (payload) => ({
+  type: deleteUserRequest.type, payload
+})
+
+export const { fetchUserStart, fetchUserSuccess, fetchUserFailure, addUserRequest, fetchUserRequest, setUsers, editUserRequest, deleteUserRequest } =
   userSlice.actions;
 
 export default userSlice.reducer;

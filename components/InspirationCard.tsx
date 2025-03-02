@@ -1,9 +1,11 @@
 import React, {JSX} from "react";
+import LoadingIndicator from "@/components/LoadingIndicator/LoadingIndicator";
 
 interface InspirationCardProps {
   generatedAt?: Date;
   title?: string;
   text?: string;
+  loading?: boolean;
 }
 
 function formatDateTime(date: Date): string {
@@ -34,6 +36,7 @@ export default function InspirationCard({
   title = "Inspiration of the day!",
   text = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
     Etiam eu turpis molestie, dictum est a, mattis tellus...`,
+  loading = false,
 }: InspirationCardProps): JSX.Element {
   return (
     <div className="card p-2" style={{background: "#f2f4f5"}}>
@@ -43,7 +46,8 @@ export default function InspirationCard({
                 Generated at: {formatDateTime(generatedAt)}
             </small>
         </div>
-        <p className="card-text mt-3" style={{marginLeft: "16px", marginRight: "16x"}}>{text}</p>
+        {loading && <LoadingIndicator />}
+        {!loading && <p className="card-text mt-3" style={{marginLeft: "16px", marginRight: "16x"}}>{text}</p>}
     </div>
   );
 }

@@ -21,7 +21,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable}`}>
         <Providers>
-          <WebVitals />
+          {/* <WebVitals /> */}
           {children}
         </Providers>
       </body>

@@ -17,7 +17,6 @@ interface RemindersListProps {
 }
 
 export default function RemindersList({ reminders, onDelete, onEdit, onComplete }: RemindersListProps) {
-  console.log('reminders', reminders)
   if (reminders.length === 0) {
     return <p className="text-muted">No reminders available.</p>;
   }
